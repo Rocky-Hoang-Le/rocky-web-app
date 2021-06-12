@@ -3,7 +3,7 @@ version = 0.1
 [default.deploy]
 [default.deploy.parameters]
 stack_name = "rocky-web-app"
-s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-1wxontolrrk2n"
+s3_bucket = "rockysamstack"
 s3_prefix = "rocky-web-app"
 region = "us-east-1"
 confirm_changeset = true

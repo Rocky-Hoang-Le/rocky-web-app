@@ -18,6 +18,7 @@ jobs:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: us-east-1
+    - run: for d in */ ; do cd $d && npm install --no-package-lock --loglevel=error && cd .. ; done
     - uses: r0zar/sam-deploy-action@v1.4
       env:
         TEMPLATE: 'template.yaml'

@@ -15,6 +15,12 @@ Globals:
     Timeout: 3
 
 Resources:
+  SAMStack: # Store Sam Stack
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: rockysamstack
+      AccessControl: Private
+  
   VisitorCountTable:
     Type: AWS::DynamoDB::Table
     Properties:

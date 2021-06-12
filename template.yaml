@@ -1,0 +1,83 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  rocky-web-app
+
+  SAM Template for rocky-web-app
+  
+Parameters:
+  StageName:
+    Type: String
+    Default: Prod
+
+Globals:
+  Function:
+    Timeout: 3
+
+Resources:
+  VisitorCountTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+          - AttributeName: "ID"
+            AttributeType: "S"
+      KeySchema:
+          - AttributeName: "ID"
+            KeyType: "HASH" 
+      TableName: CountVisitors
+      BillingMode: PAY_PER_REQUEST
+      
+  GetVisitorHttpApi:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      StageName: !Ref StageName
+      DefaultRouteSettings:
+        ThrottlingBurstLimit: 200
+      RouteSettings:
+        "GET /get":
+          ThrottlingBurstLimit: 500 # overridden in HttpApi Event
+      StageVariables:
+        StageVar: Value
+      FailOnWarnings: true
+      
+  GetVisitorFunction:
+    Type: AWS::Serverless::Function 
+    Properties:
+      CodeUri: get_visitor_function/
+      Handler: app.lambda_handler
+      Runtime: python3.8
+      Policies:
+      - DynamoDBReadPolicy:
+          TableName:
+            !Ref VisitorCountTable
+      - DynamoDBWritePolicy:
+          TableName:
+            !Ref VisitorCountTable
+      Events:
+        GetVisitorFunction:
+          Type: HttpApi 
+          Properties:
+            ApiId: !Ref GetVisitorHttpApi
+            Path: /get
+            Method: GET
+            
+  
+
+Outputs:
+
+  GetVisitorsHttpApiUrl:
+    Description: "API Gateway endpoint URL for Get Visitors"
+    Value: !Sub 'https://GetVisitorHttpApi.execute-api.${AWS::Region}.${AWS::URLSuffix}/${StageName}/get'
+    
+  GetVisitorFunction:
+    Description: "GetVisitorFunction Lambda ARN"
+    Value: !GetAtt GetVisitorFunction.Arn
+    
+  GetVisitorFunctionIamRole:
+    Description: "Implicit IAM Role created for Get Function"
+    Value: !GetAtt GetVisitorFunctionRole.Arn
+  
+  VisitorCountTable:
+    Description: "My Dynamo DB"
+    Value: !GetAtt VisitorCountTable.Arn
+   

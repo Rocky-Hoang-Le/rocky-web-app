@@ -27,12 +27,6 @@ Resources:
       BucketName: rockysamstack
       AccessControl: Private
     
-  TestStack: # Test Github action
-    Type: AWS::S3::Bucket
-    Properties:
-      BucketName: rockyteststack
-      AccessControl: Private
-  
   VisitorCountTable:
     Type: AWS::DynamoDB::Table
     Properties:
@@ -62,8 +56,7 @@ Resources:
     Type: AWS::Serverless::Function 
     Properties:
       CodeUri: 
-        Bucket: !Ref BucketName
-        Key: !Ref CodeKey
+        get_visitor_function.zip
       Handler: app.lambda_handler
       Runtime: python3.8
       Policies:

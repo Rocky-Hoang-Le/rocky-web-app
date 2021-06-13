@@ -11,7 +11,7 @@ Parameters:
     Default: 'rockysamstack'
   CodeKey:
     Type: String
-    Default: ''    
+    Default: 'rocky-web-app/get_visitor_function.zip'    
   StageName:
     Type: String
     Default: Prod

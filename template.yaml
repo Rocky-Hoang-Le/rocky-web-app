@@ -6,6 +6,10 @@ Description: >
   SAM Template for rocky-web-app
   
 Parameters:
+  BucketName:
+    Type: String
+   CodeKey:
+    Type: String
   StageName:
     Type: String
     Default: Prod
@@ -49,7 +53,9 @@ Resources:
   GetVisitorFunction:
     Type: AWS::Serverless::Function 
     Properties:
-      CodeUri: get_visitor_function/
+      CodeUri: 
+        Bucket: !Ref BucketName
+        Key: !Ref CodeKey
       Handler: app.lambda_handler
       Runtime: python3.8
       Policies:

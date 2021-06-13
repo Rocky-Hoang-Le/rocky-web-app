@@ -30,7 +30,7 @@ Resources:
   TestStack: # Test Github action
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: teststack
+      BucketName: rockyteststack
       AccessControl: Private
   
   VisitorCountTable:

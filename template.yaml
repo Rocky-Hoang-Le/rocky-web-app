@@ -8,8 +8,7 @@ Description: >
 Parameters:
   BucketName:
     Type: String
-   CodeKey:
-    Type: String
+    Default: 'rockysamstack'
   StageName:
     Type: String
     Default: Prod
@@ -55,7 +54,6 @@ Resources:
     Properties:
       CodeUri: 
         Bucket: !Ref BucketName
-        Key: !Ref CodeKey
       Handler: app.lambda_handler
       Runtime: python3.8
       Policies:
